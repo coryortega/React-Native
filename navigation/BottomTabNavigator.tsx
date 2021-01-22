@@ -7,14 +7,19 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import Login from '../screens/LoginScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, LoginScreen } from '../types';
+import Dashboard from '../screens/Dashboard';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList } from '../types';
+import { useNavigation } from '@react-navigation/native';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const navigation = useNavigation();
 
+  React.useEffect(() => {
+    
+  }, [])
   
   return (
     <BottomTab.Navigator
@@ -35,7 +40,7 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Login"
+        name="TabThree"
         component={TabThreeNavigator}
         options={{
           tabBarIcon: ({ color }) => <AntDesign name="user" size={24} color={color} />,
@@ -90,16 +95,16 @@ function TabTwoNavigator() {
   );
 }
 
-const TabThreeStack = createStackNavigator<LoginScreen>();
+const TabThreeStack = createStackNavigator<TabThreeParamList>();
 
 function TabThreeNavigator() {
   return (
     <TabThreeStack.Navigator>
       <TabThreeStack.Screen
-        name="LoginScreen"
-        component={Login}
+        name="TabThreeScreen"
+        component={Dashboard}
         options={{
-          headerTitle: 'Login to Spotify',
+          headerTitle: 'Tab Three',
           headerRight: () => (
             <LogOutButton/>
           )

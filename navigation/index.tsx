@@ -9,21 +9,21 @@ import LoginScreen from '../screens/LoginScreen';
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
+// import { AsyncStorage } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../components/context';
+
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-  // const [isLoading, setIsLoading] = React.useState(true);
-  // const [userToken, setUserToken] = React.useState<any | null>(null);
 
   const initialLoginState = {
-    isLoadin: true,
+    isLoading: true,
     userToken: null
   };
-
+  
   const loginReducer = (prevState: any, action: any) => {
     switch( action.type ) {
       case 'RETRIEVE_TOKEN':
@@ -53,6 +53,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
   const authContext = React.useMemo(() => ({
     signIn: async(token: string) => {
+      console.log("token in context", token)
       try {
         await AsyncStorage.setItem('token', token)
       } catch(e) {
@@ -83,13 +84,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     }, 1000)
   }, [])
 
-  if(loginState.isLoading) {
-    return(
-      <View>
-        <Text>Fuckin loadin</Text>
-      </View>
-    )
-  }
   
   return (
     <AuthContext.Provider value={authContext}>
@@ -97,7 +91,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
         linking={LinkingConfiguration}
         theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           {loginState.userToken !== null ? (
-            <RootNavigator />
+            <RootNavigator/>
           ) :
           <LoginScreen/>
           }
@@ -111,11 +105,13 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Root" component={BottomTabNavigator} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="MyModal" component={ModalScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
     </Stack.Navigator>
   );
 }

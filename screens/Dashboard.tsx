@@ -1,9 +1,11 @@
 import * as React from 'react';
 import LoginButton from '../components/LoginButton';
+import Player from '../components/Player';
 import { StyleSheet, Button } from 'react-native';
-
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+
+import { fetchDevicesAsync } from '../api';
 
 // import authHandler from "../components/utils/authenticationHandler";
 
@@ -12,7 +14,8 @@ export default function Dashboard() {
   return (
     <View style={styles.container}>
       {/* <Text style={styles.title}>Login</Text> */}
-      <LoginButton/>
+      <Player/>
+      <Button title="Click me" onPress={() => console.log(fetchDevicesAsync())}/>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </View>
   );

@@ -10,7 +10,7 @@ export default function TabOneScreen() {
 
   React.useEffect(() => {
     // const result = await axios();
-    axios.get('https://tenderfy.herokuapp.com/artists')
+    axios.get('https://api.spotify.com/v1/me/top/artists')
     .then(res => {
       // console.log(res.data["0"]["artists"])
       setArtists(res.data)

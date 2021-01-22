@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as WebBrowser from 'expo-web-browser';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
-import { useNavigation } from '@react-navigation/native';
-import { Button } from 'react-native';
+import { Platform, StyleSheet, Button } from 'react-native';
 import qs from 'qs';
 import axios from 'axios';
+import {authorize, refresh} from 'react-native-app-auth';
 
 import { AuthContext } from './context';
+import Navigation from '../navigation';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -18,23 +18,37 @@ const discovery = {
 };
 
 
-const LoginButton = () => {
+const LoginButton = (props: any) => {
+    let scopes = 
+        [
+            "streaming",
+            "user-read-currently-playing",
+            "user-read-playback-state",
+            "user-library-read",
+            "user-library-modify",
+            "user-modify-playback-state",
+            "user-read-email",
+            "user-top-read",
+            "user-read-private",
+            "playlist-modify-public",
+            "playlist-modify-private"
+          ];
+
 
     const { signIn } = React.useContext(AuthContext);
 
     const [request, response, promptAsync] = useAuthRequest(
         {
         clientId: '5d228af4d8fe45d5b1bb9702187643c0',
-        scopes: ['user-read-email', 'playlist-modify-public'],
+        scopes: ['user-read-email', 'playlist-modify-public', 'user-top-read'],
         // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
         // this must be set to false
         usePKCE: false,
         // For usage in managed apps using the proxy
-        redirectUri:'exp://ep-rs6.coryortega.react-native.exp.direct:80'
-        // 'http://localhost:19006/'
-        //   redirectUri: makeRedirectUri({
+        redirectUri: Platform.OS === 'ios' ? 'exp://ep-rs6.coryortega.react-native.exp.direct:80' : 'http://localhost:19006/'
+        // redirectUri: makeRedirectUri({
         //     // For usage in bare and standalone
-        //     native: 'https://www.google.com/',
+        //     native: 'your.app://redirect',
         //   }),
         },
         discovery
@@ -43,6 +57,7 @@ const LoginButton = () => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { code } = response.params;
+            console.log("response 1 =", response)
             const headers = {
                 headers: {
                 Accept: 'application/json',
@@ -56,34 +71,32 @@ const LoginButton = () => {
             const data = {
                 grant_type: 'client_credentials',
                 code: code,
-                scope: 'user-top-read'
+                scopes: 'user-top-read'
+                // "streaming user-top-read user-read-currently-playing user-read-playback-state user-library-read user-library-modify user-modify-playback-state user-read-email user-read-private playlist-modify-public playlist-modify-private"
             };
 
             axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers)
             .then(res => {
+                console.log("response 2 =", res)
                 const token = res.data;
-                signIn(token);
-
-                axios.post("https://tenderfy.herokuapp.com/json/user-token", token)
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+                console.log("this is token:", token)
+                signIn(token.access_token);
+                // props.navigation.navigate('Login')
             })
             .catch(err => {
                 console.log(err)
             })
         }
     }, [response]);
-
+//response
     return (
         <Button
         disabled={!request}
         title="Login with Spotify"
-        color="#1DB954"
+        // style={styles.button}
+        color={Platform.OS === 'ios' ? 'white' : '#e21051'}
         onPress={() => {
+            console.log('signing in');
             promptAsync();
             // navigation.navigate('TabOne', { name: 'TabOne' })
             // response?.type === 'success' ? props.navigation.navigate('Home')

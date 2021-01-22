@@ -16,13 +16,14 @@ export default {
               TabTwoScreen: 'two',
             },
           },
-          Login: {
+          TabThree: {
             screens: {
-              Login: 'Login',
+              TabThreeScreen: 'three',
             },
           },
         },
       },
+      Login: 'Login',
       NotFound: '*',
     },
   },
