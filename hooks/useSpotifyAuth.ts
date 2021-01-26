@@ -55,27 +55,19 @@ export default function useSpotifyAuth() {
         setError(authResponse.error);
         return;
       } else if (authResponse.type === "success") {
-        console.log("success getting code!", authResponse.params.code);
-        const code: object = {"code": authResponse.params.code}
-        const result = await fetchToken(code);
-        if (result.error || !result.token) {
-          setError(result.error ?? "Unknown error");
-        } else {
-          //   await LocalStorage.setAuthCredentialsAsync({
-          //     ...result,
-          //     lastRefreshed: new Date(),
-          //   });
-          console.log("success getting token! here it is", result);
-          signIn(result.token);
-          setIsAuthenticated(true);
+          console.log("success getting code!", authResponse.params.code);
+          const code: string = authResponse.params.code;
+          const result = await fetchTokenAsync(
+            code
+          );
+          console.log("this is async", result)
+          signIn(result?.data.access_token)
         }
       }
-    }
-
-    if (!isAuthenticated) {
-      updateFromAuthResponseAsync();
-    }
-  }, [authResponse]);
+      if (!isAuthenticated) {
+        updateFromAuthResponseAsync();
+      }
+    }, [authResponse]);
 
   return {
     error,

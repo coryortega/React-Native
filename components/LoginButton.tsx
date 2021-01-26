@@ -57,6 +57,7 @@ const LoginButton = (props: any) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { code } = response.params;
+            console.log("THIS CODE FROM PARAMS", code)
             console.log("response 1 =", response)
             const headers = {
                 headers: {

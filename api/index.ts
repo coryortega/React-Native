@@ -29,88 +29,51 @@ export type Device = {
     isRestricted: boolean;
   };
 
-export async function fetchToken(code: object) {
-    const headers = {
-        headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        auth: {
-        username: '5d228af4d8fe45d5b1bb9702187643c0',
-        password: '2e64ed63024a402d81fde645767a3680',
-        },
-    };
-    const data = {
-        grant_type: 'client_credentials',
-        code: code,
-        scopes:"streaming user-read-currently-playing user-read-playback-state user-library-read user-library-modify user-modify-playback-state user-read-email user-read-private playlist-modify-public playlist-modify-private"
-    };
-
-    // try {
-        const response = await axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers);
-        return await response;
-    // } catch (err) {
-    //     console.log(err)
-    // }
-
-    // .then(res => {
-    //     console.log("response 2 =", res)
-    //     const token = res.data;
-    //     console.log("this is token:", token)
-    //     signIn(token.access_token);
-    //     // props.navigation.navigate('Login')
-    // })
-    // .catch(err => {
-    //     console.log(err)
-    // })
-}
-
-// export async function fetchTokenAsync(code: object) {
-//     console.log("this is code in flask call", code)
-//     const response = await fetch(TOKEN_ENDPOINT, {
-//       method: "POST",
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json",
-//       },
-//       body:
-//       JSON.stringify({
+// export async function fetchToken(code: object) {
+//     const headers = {
+//         headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/x-www-form-urlencoded',
+//         },
+//         auth: {
+//         username: '5d228af4d8fe45d5b1bb9702187643c0',
+//         password: '2e64ed63024a402d81fde645767a3680',
+//         },
+//     };
+//     const data = {
 //         grant_type: 'client_credentials',
 //         code: code,
 //         scopes:"streaming user-read-currently-playing user-read-playback-state user-library-read user-library-modify user-modify-playback-state user-read-email user-read-private playlist-modify-public playlist-modify-private"
-//       }),
-//     });
-//     console.log(response);
-//     return await response.json();
-//   }
-  export async function fetchTokenAsync(code: object) {
-    const { signIn } = React.useContext(AuthContext);
-    const headers = {
-      headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      }
-    };
-    const data = {
-        grant_type: "authorization_code",
-        code: code,
-        redirect_uri: 'http://localhost:19006/',
-        client_id: '5d228af4d8fe45d5b1bb9702187643c0',
-        client_secret: '2e64ed63024a402d81fde645767a3680',
-    };
-    return axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers)
-      .then(res => {
-          console.log("response 2 =", res)
-          const token = res.data;
-          console.log("this is token:", token)
-          signIn(token.access_token);
-          // props.navigation.navigate('Login')
-      })
-      .catch(err => {
-          console.log(err)
-          
-      })
+//     };
+
+//     // try {
+//         const response = await axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers);
+//         return await response;
+// }
+
+export async function fetchTokenAsync(code: string) {
+  const headers = {
+    headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  };
+  const data = {
+      grant_type: "authorization_code",
+      code: code,
+      redirect_uri: 'http://localhost:19006/',
+      client_id: '5d228af4d8fe45d5b1bb9702187643c0',
+      client_secret: '2e64ed63024a402d81fde645767a3680',
+  };
+
+  try {
+    const response = await axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers)
+    return await response;
+  } catch (err) {
+      // Handle Error Here
+      console.error(err);
   }
+}
 
   export async function fetchDevicesAsync(): Promise<any> {
     const client = await _getClientAsync();
@@ -151,12 +114,14 @@ export async function fetchToken(code: object) {
     return await client.pause();
   }
 
+  export async function getUsersTopTracks(type: object) {
+    const client = await _getClientAsync();
+    return client.getMyTopTracks(type);
+  }
+
   async function _getClientAsync() {
-      console.log("getting client...")
     const newToken = await AsyncStorage.getItem('token')
-    console.log(" this is new token...", newToken)
     const client = new SpotifyWebApi();
     client.setAccessToken(newToken);
-    console.log("this is client...", client)
     return client;
   }
