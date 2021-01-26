@@ -9,13 +9,35 @@ import { fetchDevicesAsync, pauseAsync, playTrackAsync, getUsersTopTracks } from
 
 export default function Dashboard() {
 
+  const [tracks, setTracks] = React.useState([]);
+
   React.useEffect(()=> {
-    console.log(getUsersTopTracks({"type":"tracks"}))
+    getUsersTopTracks().then(res => {
+      console.log(res);
+      setTracks(res.items);
+    })
+    // console.log(topTracks)
   }, [])
 
   return (
     <View style={styles.container}>
-      <Player/>
+      {/* <Player/> */}
+      <View>
+        {tracks.map((track, key) => (
+          <View key={key}>
+            <View>
+              <Text>
+                {track.name}
+              </Text>
+              <Button title="Play" onPress={() => playTrackAsync({uri: track.uri})}/>
+              {/* <Image
+                style={styles.image}
+                source={{uri: artists[artist]["images"]}}
+              /> */}
+            </View>
+          </View>
+        ))}
+      </View>
       <Button title="Pause" onPress={() => pauseAsync()}/>
       <Button title="Get devices" onPress={() => console.log(fetchDevicesAsync())}/>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />

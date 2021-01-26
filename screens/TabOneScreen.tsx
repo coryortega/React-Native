@@ -8,14 +8,14 @@ import axios from 'axios';
 export default function TabOneScreen() {
   const [artists, setArtists] = React.useState<any | object>({})
 
-  React.useEffect(() => {
-    // const result = await axios();
-    axios.get('https://api.spotify.com/v1/me/top/artists')
-    .then(res => {
-      // console.log(res.data["0"]["artists"])
-      setArtists(res.data)
-    })
-  }, [])
+  // React.useEffect(() => {
+  //   // const result = await axios();
+  //   axios.get('https://api.spotify.com/v1/me/top/artists')
+  //   .then(res => {
+  //     // console.log(res.data["0"]["artists"])
+  //     setArtists(res.data)
+  //   })
+  // }, [])
 
   return (
     <View style={styles.container}>

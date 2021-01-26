@@ -94,18 +94,18 @@ export async function fetchTokenAsync(code: string) {
 
   export async function playTrackAsync({
     uri,
-    deviceId,
-    time,
+    // deviceId,
+    // time,
   }: {
     uri: string;
-    deviceId: string;
-    time?: number;
+    // deviceId: string;
+    // time?: number;
   }) {
     const client = await _getClientAsync();
     return await client.play({
       uris: [uri],
-      device_id: deviceId,
-      position_ms: time ?? 0,
+      // device_id: deviceId,
+      // position_ms: time ?? 0,
     });
   }
 
@@ -114,14 +114,16 @@ export async function fetchTokenAsync(code: string) {
     return await client.pause();
   }
 
-  export async function getUsersTopTracks(type: object) {
+  export async function getUsersTopTracks() {
     const client = await _getClientAsync();
-    return client.getMyTopTracks(type);
+    // console.log(client.getMyTopTracks())
+    return await client.getMyTopTracks({"limit":5});
   }
 
   async function _getClientAsync() {
     const newToken = await AsyncStorage.getItem('token')
     const client = new SpotifyWebApi();
+    console.log("this is token", newToken)
     client.setAccessToken(newToken);
     return client;
   }
