@@ -16,7 +16,7 @@ const LogOutButton = () => {
             title={'Logout'}
             onPress={() => {
                 navigation.navigate('Login')
-                // {signOut()}
+                {signOut()}
                 }}
             color="#1DB954"
             />

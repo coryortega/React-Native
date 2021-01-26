@@ -1,7 +1,9 @@
+import * as React from 'react';
 import SpotifyWebApi from "spotify-web-api-js";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import qs from 'qs';
+import { AuthContext } from '../components/context';
 
 // const TOKEN_ENDPOINT = "http://127.0.0.1:5000/token";
 const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
@@ -63,21 +65,51 @@ export async function fetchToken(code: object) {
     // })
 }
 
-export async function fetchTokenAsync(code: object) {
-    console.log("this is code in flask call", code)
-    const response = await fetch(TOKEN_ENDPOINT, {
-      method: "POST",
+// export async function fetchTokenAsync(code: object) {
+//     console.log("this is code in flask call", code)
+//     const response = await fetch(TOKEN_ENDPOINT, {
+//       method: "POST",
+//       headers: {
+//         Accept: "application/json",
+//         "Content-Type": "application/json",
+//       },
+//       body:
+//       JSON.stringify({
+//         grant_type: 'client_credentials',
+//         code: code,
+//         scopes:"streaming user-read-currently-playing user-read-playback-state user-library-read user-library-modify user-modify-playback-state user-read-email user-read-private playlist-modify-public playlist-modify-private"
+//       }),
+//     });
+//     console.log(response);
+//     return await response.json();
+//   }
+  export async function fetchTokenAsync(code: object) {
+    const { signIn } = React.useContext(AuthContext);
+    const headers = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body:
-      JSON.stringify({
-        code
-      }),
-    });
-    console.log(response);
-    return await response.json();
+      Accept: 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    };
+    const data = {
+        grant_type: "authorization_code",
+        code: code,
+        redirect_uri: 'http://localhost:19006/',
+        client_id: '5d228af4d8fe45d5b1bb9702187643c0',
+        client_secret: '2e64ed63024a402d81fde645767a3680',
+    };
+    return axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers)
+      .then(res => {
+          console.log("response 2 =", res)
+          const token = res.data;
+          console.log("this is token:", token)
+          signIn(token.access_token);
+          // props.navigation.navigate('Login')
+      })
+      .catch(err => {
+          console.log(err)
+          
+      })
   }
 
   export async function fetchDevicesAsync(): Promise<any> {
