@@ -7,4 +7,5 @@
 - Replace current state management (useContext) with Redux
 - Currently handeling auth client-side, need to move code/token exchange server-side
 - Define more Spotify functionality in api/index
-- need to define more functionality in the dashboard component
+- Swap AsyncStorage with [expo-secure-store](https://docs.expo.io/guides/authentication/#storing-data)
+
