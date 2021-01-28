@@ -5,6 +5,12 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
+import rootReducer from "./Redux/reducers";
+import { applyMiddleware, createStore } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -16,11 +22,13 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme='dark' />
-        {/* <Navigation colorScheme='dark' /> */}
-        <StatusBar />
-      </SafeAreaProvider>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <Navigation colorScheme='dark' />
+          {/* <Navigation colorScheme='dark' /> */}
+          <StatusBar />
+        </SafeAreaProvider>
+      </Provider>
     )
   }
 }

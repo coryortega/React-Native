@@ -73,7 +73,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
   React.useEffect(() => {
     let userToken: any = null;
-
     setTimeout(async() => {
       try {
         userToken = await AsyncStorage.getItem('token')

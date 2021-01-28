@@ -4,6 +4,9 @@ import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import { fetchTokenAsync, fetchToken } from "../api";
 import { AuthContext } from "../components/context";
+import { connect } from 'react-redux';
+import { getUserToken } from '../Redux/Spotify/spotify.actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -14,7 +17,7 @@ const CLIENT_ID = "5d228af4d8fe45d5b1bb9702187643c0";
 
 WebBrowser.maybeCompleteAuthSession();
 
-export default function useSpotifyAuth() {
+function useSpotifyAuth() {
   const [error, setError] = useState<any | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { signIn } = useContext(AuthContext);
@@ -61,8 +64,8 @@ export default function useSpotifyAuth() {
           const result = await fetchTokenAsync(
             code
           );
-          console.log("this is async", result)
-          signIn(result?.data.access_token)
+          AsyncStorage.setItem("token", result?.data.access_token)
+          // signIn(result?.data.access_token)
         }
       }
       if (!isAuthenticated) {
@@ -76,3 +79,13 @@ export default function useSpotifyAuth() {
     authenticateAsync: () => promptAsync(),
   };
 }
+
+
+// function mapStateToProps(state: any){
+//   return {
+//     token: state.token
+//   }
+// }
+
+// export default connect(mapStateToProps, { getUserToken })(useSpotifyAuth)
+export default useSpotifyAuth

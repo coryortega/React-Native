@@ -120,6 +120,11 @@ export async function fetchTokenAsync(code: string) {
     return await client.getMyTopTracks({"limit":5});
   }
 
+  export async function getAudioInfo(trackId: string) {
+    const client = await _getClientAsync();
+    return client.getAudioFeaturesForTrack(trackId);
+  }
+
   async function _getClientAsync() {
     const newToken = await AsyncStorage.getItem('token')
     const client = new SpotifyWebApi();
