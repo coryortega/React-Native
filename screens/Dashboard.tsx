@@ -1,7 +1,7 @@
 import * as React from 'react';
 import LoginButton from '../components/LoginButton';
 import Player from '../components/Player';
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button, ScrollView } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { fetchDevicesAsync } from '../api';
@@ -10,7 +10,9 @@ import { fetchDevicesAsync } from '../api';
 export default function Dashboard() {
   return (
     <View style={styles.container}>
-      <Player/>
+      <ScrollView>
+        <Player/>
+      </ScrollView>
       <Button title="Get devices" onPress={() => console.log(fetchDevicesAsync())}/>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </View>

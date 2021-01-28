@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getTrackInfo } from "../Redux/Spotify/spotify.actions";
 import { fetchDevicesAsync, pauseAsync, playTrackAsync, getUsersTopTracks, getAudioInfo } from '../api';
+import Chart from './Chart';
 
 function Player(props: any) {
 
@@ -25,19 +26,17 @@ function Player(props: any) {
 
   return (
     <View>
-      {/* {console.log(props.tracks)} */}
+      <Chart traits={props.traits}/>
       {tracks.map((track, key) => (
         <View key={key}>
           <View>
             <Text>
               {track.name}
             </Text>
-            <Button title="Play" onPress={() => {props.getTrackInfo(track.id); console.log(props.traits)}}/>
-            <Text>{props.traits.danceability}</Text>
+            <Button title="Play" onPress={() => {props.getTrackInfo(track.id); playTrackAsync({uri: track.uri})}}/>
           </View>
         </View>
       ))}
-      <Text>Traits: </Text>
       <Button title="Pause" onPress={() => pauseAsync()}/>
     </View>
   );
