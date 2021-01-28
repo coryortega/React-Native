@@ -5,6 +5,7 @@
 
 ### TODO:
 - [x] Replace current state management (useContext) with Redux
+- [x] Get dynamic visualization chart working
 - [] Currently handeling auth client-side, need to move code/token exchange server-side
 - [] Bring in DS songs, concatenate them and collectively fetch track data from Spotify
 - [] Define more Spotify functionality in api/index (prevTrack, nextTrack, createPlaylist, like/unlike, etc.)
