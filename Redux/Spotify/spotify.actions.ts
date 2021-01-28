@@ -8,10 +8,9 @@ export const getUserToken = (code: string) => (dispatch: any) => {
     });
     fetchTokenAsync(code)
         .then((res) => {
-            console.log("res in spotify.actions", res)
             dispatch({
                 type: SpotifyActionTypes.GET_TOKEN_SUCCESS,
-                payload: res.data
+                payload: res
             });
         })
         .catch((err) => {
@@ -29,21 +28,19 @@ export function logOut(dispatch: any) {
 }
 
 export const getTrackInfo = (trackId: string) => (dispatch: any) => {
-    console.log("gettin track info");
     dispatch({
         type: SpotifyActionTypes.GET_TRACK_INFO_FETCHING
     });
     getAudioInfo(trackId)
     .then((res) => {
-        console.log("res in spotify.actions", res)
         dispatch({
-            type: SpotifyActionTypes.GET_TOKEN_SUCCESS,
-            payload: res.data
+            type: SpotifyActionTypes.GET_TRACK_INFO_SUCCESS,
+            payload: res
         });
     })
     .catch((err) => {
         dispatch({
-            type: SpotifyActionTypes.GET_TOKEN_FAILURE,
+            type: SpotifyActionTypes.GET_TRACK_INFO_FAILURE,
             payload: err
         });    
     })

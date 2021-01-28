@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { Platform } from "react-native";
 import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
-import { fetchTokenAsync, fetchToken } from "../api";
+import { fetchTokenAsync } from "../api";
 import { AuthContext } from "../components/context";
 import { connect } from 'react-redux';
 import { getUserToken } from '../Redux/Spotify/spotify.actions';
@@ -59,13 +59,11 @@ function useSpotifyAuth() {
         setError(authResponse.error);
         return;
       } else if (authResponse.type === "success") {
-          console.log("success getting code!", authResponse.params.code);
           const code: string = authResponse.params.code;
           const result = await fetchTokenAsync(
             code
           );
           AsyncStorage.setItem("token", result?.data.access_token)
-          // signIn(result?.data.access_token)
         }
       }
       if (!isAuthenticated) {
@@ -80,12 +78,4 @@ function useSpotifyAuth() {
   };
 }
 
-
-// function mapStateToProps(state: any){
-//   return {
-//     token: state.token
-//   }
-// }
-
-// export default connect(mapStateToProps, { getUserToken })(useSpotifyAuth)
 export default useSpotifyAuth

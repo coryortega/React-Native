@@ -116,7 +116,6 @@ export async function fetchTokenAsync(code: string) {
 
   export async function getUsersTopTracks() {
     const client = await _getClientAsync();
-    // console.log(client.getMyTopTracks())
     return await client.getMyTopTracks({"limit":5});
   }
 

@@ -1,22 +1,26 @@
+import SpotifyActionTypes from '../Spotify/spotify.types'
 const initialState = {};
 
 const getTrackInfoReducer = (state=initialState, action: any) => {
+    console.log(action.payload)
+
     switch(action.type) {
-    case 'GET_TRACK_INFO_FETCHING':
-        return{
+    case SpotifyActionTypes.GET_TRACK_INFO_FETCHING:
+        console.log("this is fetching", action.payload)
+        return {
             ...state,
-            currentUserFetching: true
+            ...action.payload
         }
-      case 'GET_TRACK_INFO_SUCESS':
-        return{
+      case SpotifyActionTypes.GET_TRACK_INFO_SUCCESS:
+        console.log("this is sucess", action.payload)
+        return {
             ...state,
-            token: action.payload,
-            currentUserFetching: false
+            ...action.payload
         }
-      case 'GET_TRACK_INFO_FAILURE':
-        return{
+      case SpotifyActionTypes.GET_TRACK_INFO_FAILURE:
+        return {
             ...state,
-            error: action.payload
+            ...action.payload
         }
     }
     return state;

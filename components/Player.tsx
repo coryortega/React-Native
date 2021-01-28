@@ -19,6 +19,10 @@ function Player(props: any) {
     })
   }, [])
 
+  // React.useEffect(()=> {
+  //   console.log(props.traits)
+  // }, [props.traits])
+
   return (
     <View>
       {/* {console.log(props.tracks)} */}
@@ -28,10 +32,12 @@ function Player(props: any) {
             <Text>
               {track.name}
             </Text>
-            <Button title="Play" onPress={() => {console.log(props.getTrackInfo(track.id))}}/>
+            <Button title="Play" onPress={() => {props.getTrackInfo(track.id); console.log(props.traits)}}/>
+            <Text>{props.traits.danceability}</Text>
           </View>
         </View>
       ))}
+      <Text>Traits: </Text>
       <Button title="Pause" onPress={() => pauseAsync()}/>
     </View>
   );
@@ -54,12 +60,9 @@ const styles = StyleSheet.create({
   },
 });
 
-// function mapDispatchToProps(dispatch: any){
-//   return bindActionCreators({getTrackInfo},dispatch); 
-// }
 
 const mapStateToProps = (state: any) => ({
-    tracks: state.getTrackInfoReducer
+    traits: state.getTrackInfoReducer
 })
 
 export default connect(mapStateToProps, {getTrackInfo})(Player);

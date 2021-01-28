@@ -8,6 +8,7 @@ import Navigation from './navigation';
 import rootReducer from "./Redux/reducers";
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
+import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
