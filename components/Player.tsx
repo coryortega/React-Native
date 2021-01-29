@@ -1,12 +1,10 @@
-import axios from 'axios';
 import * as React from 'react';
 import { StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { Text, View } from './Themed';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getTrackInfo } from "../Redux/Spotify/spotify.actions";
-import { fetchDevicesAsync, pauseAsync, playTrackAsync, getUsersTopTracks, getAudioInfo, postDSSong } from '../api';
+import { getDSSongs } from "../Redux/DS/ds.actions";
+import { fetchDevicesAsync, pauseAsync, playTrackAsync, getUsersTopTracks } from '../api';
 import Chart from './Chart';
 
 function Player(props: any) {
@@ -14,22 +12,20 @@ function Player(props: any) {
   const [tracks, setTracks] = React.useState([]);
 
   React.useEffect(()=> {
+    props.getDSSongs();
     getUsersTopTracks().then(res => {
-      console.log(res);
       setTracks(res.items);
     })
-
-    // postDSSong().then(res => console.log(res)).catch(err => console.log(err))
   }, [])
 
-  // React.useEffect(()=> {
-  //   console.log(props.traits)
-  // }, [props.traits])
+
+  console.log("ds tracks in player", Object.keys(props.tracks));
+
 
   return (
     <View>
       <Chart traits={props.traits}/>
-      {tracks.map((track, key) => (
+      {[props.tracks].map((track, key) => ( console.log(track),
         <View key={key}>
           <View>
             <Text>
@@ -63,7 +59,8 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state: any) => ({
-    traits: state.getTrackInfoReducer
+    traits: state.getTrackInfoReducer,
+    tracks: state.getDSSongsReducer
 })
 
-export default connect(mapStateToProps, {getTrackInfo})(Player);
+export default connect(mapStateToProps, {getTrackInfo, getDSSongs})(Player);

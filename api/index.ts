@@ -88,14 +88,19 @@ export async function fetchTokenAsync(code: string) {
 
   export function postDSSong() {
     const token = localStorage.getItem('token');
-
     return axios.post("http://Sounddrip-prod2.us-east-1.elasticbeanstalk.com/request", {"token": token})
       .then((res) => {
-        return res;
+        return res.data;
       })
       .catch((err) => {
+        console.log(err)
         return err;
       })
+  }
+
+  export async function getTracks(trackIds: any) {
+    const client = await _getClientAsync();
+    return await client.getTracks([trackIds]);
   }
 
   export async function pauseAsync(): Promise<void> {
