@@ -29,28 +29,6 @@ export type Device = {
     isRestricted: boolean;
   };
 
-// export async function fetchToken(code: object) {
-//     const headers = {
-//         headers: {
-//         Accept: 'application/json',
-//         'Content-Type': 'application/x-www-form-urlencoded',
-//         },
-//         auth: {
-//         username: '5d228af4d8fe45d5b1bb9702187643c0',
-//         password: '2e64ed63024a402d81fde645767a3680',
-//         },
-//     };
-//     const data = {
-//         grant_type: 'client_credentials',
-//         code: code,
-//         scopes:"streaming user-read-currently-playing user-read-playback-state user-library-read user-library-modify user-modify-playback-state user-read-email user-read-private playlist-modify-public playlist-modify-private"
-//     };
-
-//     // try {
-//         const response = await axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers);
-//         return await response;
-// }
-
 export async function fetchTokenAsync(code: string) {
   const headers = {
     headers: {
@@ -70,7 +48,6 @@ export async function fetchTokenAsync(code: string) {
     const response = await axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers)
     return await response;
   } catch (err) {
-      // Handle Error Here
       console.error(err);
   }
 }
@@ -109,6 +86,18 @@ export async function fetchTokenAsync(code: string) {
     });
   }
 
+  export function postDSSong() {
+    const token = localStorage.getItem('token');
+
+    return axios.post("http://Sounddrip-prod2.us-east-1.elasticbeanstalk.com/request", {"token": token})
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      })
+  }
+
   export async function pauseAsync(): Promise<void> {
     const client = await _getClientAsync();
     return await client.pause();
@@ -116,7 +105,7 @@ export async function fetchTokenAsync(code: string) {
 
   export async function getUsersTopTracks() {
     const client = await _getClientAsync();
-    return await client.getMyTopTracks({"limit":20});
+    return await client.getMyTopTracks({"limit":50});
   }
 
   export async function getAudioInfo(trackId: string) {

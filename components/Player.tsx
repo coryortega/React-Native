@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getTrackInfo } from "../Redux/Spotify/spotify.actions";
-import { fetchDevicesAsync, pauseAsync, playTrackAsync, getUsersTopTracks, getAudioInfo } from '../api';
+import { fetchDevicesAsync, pauseAsync, playTrackAsync, getUsersTopTracks, getAudioInfo, postDSSong } from '../api';
 import Chart from './Chart';
 
 function Player(props: any) {
@@ -18,6 +18,8 @@ function Player(props: any) {
       console.log(res);
       setTracks(res.items);
     })
+
+    // postDSSong().then(res => console.log(res)).catch(err => console.log(err))
   }, [])
 
   // React.useEffect(()=> {
