@@ -7,7 +7,7 @@
 - [x] Replace current state management (useContext) with Redux
 - [x] Get dynamic visualization chart working
 - [] Currently handeling auth client-side, need to move code/token exchange server-side
-- [] Bring in DS songs, concatenate them and collectively fetch track data from Spotify
+- [x] Bring in DS songs, concatenate them and collectively fetch track data from Spotify
 - [] Define more Spotify functionality in api/index (prevTrack, nextTrack, createPlaylist, like/unlike, etc.)
 - [] Set up refresh token functionality when token is about to expire
 - [] Swap AsyncStorage with [expo-secure-store](https://docs.expo.io/guides/authentication/#storing-data)
