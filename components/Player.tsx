@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, TouchableOpacity, Image } from 'react-native';
 import { Text, View } from './Themed';
 import { connect } from 'react-redux';
 import { getTrackInfo } from "../Redux/Spotify/spotify.actions";
@@ -10,6 +10,7 @@ import Chart from './Chart';
 function Player(props: any) {
 
   const [tracks, setTracks] = React.useState([]);
+  const [songImage, setSongImage] = React.useState('');
 
   React.useEffect(()=> {
     props.getDSSongs();
@@ -18,20 +19,38 @@ function Player(props: any) {
     })
   }, [])
 
+  console.log(props.tracks)
 
-  console.log("ds tracks in player", Object.keys(props.tracks));
+  const songArray = [];
+  
+  for(let key in props.tracks) {
+    songArray.push(props.tracks[key])
+  }
 
+  console.log(songArray)
+
+  function currentlyPlaying(id, uri, image) {
+    props.getTrackInfo(id);
+    playTrackAsync({uri: uri});
+    setSongImage(image);
+  }
+
+  console.log(songImage);
 
   return (
     <View>
+      <Image
+        style={styles.logo}
+        source={{uri: songImage}}
+      />
       <Chart traits={props.traits}/>
-      {[props.tracks].map((track, key) => ( console.log(track),
+      {songArray.map((track, key) => (
         <View key={key}>
           <View>
             <Text>
               {track.name}
             </Text>
-            <Button title="Play" onPress={() => {props.getTrackInfo(track.id); playTrackAsync({uri: track.uri})}}/>
+            <Button title="Play" onPress={() => currentlyPlaying(track.id, track.uri, track.album.images[1].url)}/>
           </View>
         </View>
       ))}
@@ -54,6 +73,10 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  logo: {
+    width: 300,
+    height: 300,
   },
 });
 
