@@ -7,10 +7,14 @@ import { Text, View } from '../components/Themed';
 import { fetchDevicesAsync } from '../api';
 
 
+
 export default function Dashboard() {
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator = {false}
+        showsHorizontalScrollIndicator = {false}
+      >
         <Player/>
       </ScrollView>
       <Button title="Get devices" onPress={() => console.log(fetchDevicesAsync())}/>

@@ -86,9 +86,12 @@ export async function fetchTokenAsync(code: string) {
     });
   }
 
+  const stagingUrl = "http://sounddrip-staging2.us-east-1.elasticbeanstalk.com/request"
+  const productionUrl = "http://Sounddrip-prod2.us-east-1.elasticbeanstalk.com/request"
+
   export function postDSSong() {
     const token = localStorage.getItem('token');
-    return axios.post("http://Sounddrip-prod2.us-east-1.elasticbeanstalk.com/request", {"token": token})
+    return axios.post(stagingUrl, {"token": token})
       .then((res) => {
         return res.data;
       })
@@ -116,6 +119,11 @@ export async function fetchTokenAsync(code: string) {
   export async function getAudioInfo(trackId: string) {
     const client = await _getClientAsync();
     return client.getAudioFeaturesForTrack(trackId);
+  }
+
+  export async function getCurrentPlaybackState() {
+    const client = await _getClientAsync();
+    return client.getMyCurrentPlaybackState;
   }
 
   async function _getClientAsync() {

@@ -38,7 +38,7 @@ export default function SongListCard(props: any) {
             borderRadius:25,
         }}
     >
-       <AntDesign name="caretright" size={24} color="white" />
+        {props.currentSong.trackId === props.id ? <AntDesign name="pausecircleo" size={24} color="white" /> : <AntDesign name="caretright" size={24} color="white" />}
     </TouchableOpacity>
     </View>
   );
