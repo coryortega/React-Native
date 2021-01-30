@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Text, View } from './Themed';
 import {
-  Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+  Radar, RadarChart, PolarGrid, PolarAngleAxis,
 } from 'recharts';
 
 
@@ -63,7 +63,6 @@ export default function Chart(props: any) {
              <RadarChart cx={188} cy={120} outerRadius={100} width={377} height={240} data={data}>
                  <PolarGrid />
                  <PolarAngleAxis stroke='white' dataKey="subject" />
-                 <PolarRadiusAxis />
                  <Radar id="canvas"
                   dataKey='A'
                   stroke='white'

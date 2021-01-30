@@ -17,7 +17,7 @@ export default function CurrentlyPlayingCard(props: any) {
           <Text style={styles.subTitle}>
               {props.artist}
           </Text>
-          <Text style={styles.subTitle}>
+          <Text style={styles.album}>
               {props.album}
           </Text>
       </View>
@@ -38,6 +38,10 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: 17,
   },
+  album: {
+    fontSize: 17,
+    fontWeight: '300'
+  },
   song: {
     flex: 1,
     alignItems: 'center',
@@ -46,6 +50,7 @@ const styles = StyleSheet.create({
   image: {
     width: 300,
     height: 300,
-    margin: 10
+    margin: 10,
+    marginTop: 20
   },
 });
