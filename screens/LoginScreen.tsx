@@ -36,7 +36,7 @@ const Login = ({ navigation }: any) => {
       </View>
       <View style={styles.loginScreenButton}>
         {/* <LoginButton props={navigation}/> */}
-        <Button color={Platform.OS === 'ios' ? 'white' : '#e21051'} title={'Sign in with Spotify!!!'} onPress={() => authenticateAsync()}/>
+        <Button color={Platform.OS === 'ios' ? 'white' : '#e21051'} title={'Sign in with Spotify'} onPress={() => authenticateAsync()}/>
       </View>
       
     </View>

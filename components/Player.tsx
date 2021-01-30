@@ -21,14 +21,10 @@ function Player(props: any) {
     trackId: ""
   }
 
-  const [tracks, setTracks] = React.useState([]);
   const [currentSong, setCurrentSong] = React.useState(initialSong);
 
   React.useEffect(()=> {
     props.getDSSongs();
-    getUsersTopTracks().then(res => {
-      setTracks(res.items);
-    })
   }, [])
 
   console.log(props.tracks)
@@ -52,6 +48,7 @@ function Player(props: any) {
       <View style={styles.chart} >
         <Chart traits={props.traits}/>
       </View>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {songArray.map((track, key) => (
       <SongListCard key={key} currentSong={currentSong} playing={currentlyPlaying} id={track.id} uri={track.uri} songImage={track.album.images[1].url} songName={track.name} artist={track.artists[0].name} album={track.album.name}/>
       ))}
@@ -71,9 +68,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   separator: {
-    marginVertical: 30,
+    marginBottom: 20,
     height: 1,
-    width: '80%',
+    // width: '80%',
   },
   chart: {
     flex: 1,
@@ -90,3 +87,4 @@ const mapStateToProps = (state: any) => ({
 })
 
 export default connect(mapStateToProps, {getTrackInfo, getDSSongs})(Player);
+

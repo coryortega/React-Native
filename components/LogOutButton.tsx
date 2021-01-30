@@ -18,7 +18,7 @@ const LogOutButton = () => {
                 navigation.navigate('Login')
                 {signOut()}
                 }}
-            color="#1DB954"
+            color="#e21051"
             />
         </View>
     );

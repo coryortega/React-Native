@@ -18,7 +18,6 @@ export default function Dashboard() {
         <Player/>
       </ScrollView>
       <Button title="Get devices" onPress={() => console.log(fetchDevicesAsync())}/>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </View>
   );
 }
