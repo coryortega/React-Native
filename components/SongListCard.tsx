@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { StyleSheet, Button, TouchableOpacity, Image } from "react-native";
 import { Text, View } from "./Themed";
 import { pauseAsync } from '../api';
@@ -16,7 +16,6 @@ export default function SongListCard(props: any) {
         <Text style={styles.songName}>{props.songName}</Text>
         <Text style={styles.artist}>{props.artist}</Text>
       </View>
-      {/* <Button title="Play" onPress={() => currentlyPlaying(props.id, props.uri, props.songImage, props.songName, props.artist, props.album)}/> */}
       <TouchableOpacity
         onPress={() => props.currentSong.trackId === props.id ? pauseAsync() :
           currentlyPlaying(
@@ -40,7 +39,7 @@ export default function SongListCard(props: any) {
         }}
       >
         {props.currentSong.trackId === props.id ? (
-          <AntDesign name="pausecircleo" size={24} color="white" />
+          <Ionicons name="pause" size={27} color="white" />
         ) : (
           <AntDesign name="caretright" size={24} color="white" />
         )}

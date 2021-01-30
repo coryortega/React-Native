@@ -3,16 +3,15 @@ import currentlyPlayingCard from './CurrentlyPlayingCard';
 import { StyleSheet, Button, TouchableOpacity, Image } from 'react-native';
 import { Text, View } from './Themed';
 import { connect } from 'react-redux';
-import { getTrackInfo } from "../Redux/Spotify/spotify.actions";
+import { getTrackInfo, getCurrentPlayback } from "../Redux/Spotify/spotify.actions";
 import { getDSSongs } from "../Redux/DS/ds.actions";
-import { fetchDevicesAsync, pauseAsync, playTrackAsync, getUsersTopTracks, getCurrentPlaybackState } from '../api';
+import { fetchDevicesAsync, pauseAsync, playTrackAsync, getUsersTopTracks } from '../api';
 import Chart from './Chart';
 import { CurrentRenderContext } from '@react-navigation/native';
 import CurrentlyPlayingCard from './CurrentlyPlayingCard';
 import SongListCard from './SongListCard';
 
 function Player(props: any) {
-
   const initialSong = {
     songName: "",
     artist: "",
@@ -24,10 +23,21 @@ function Player(props: any) {
   const [currentSong, setCurrentSong] = React.useState(initialSong);
 
   React.useEffect(()=> {
+    props.getCurrentPlayback();
     props.getDSSongs();
   }, [])
 
-  console.log(props.tracks)
+  React.useEffect(()=> {
+    props.getTrackInfo(props.initialPlayback.item.id)
+    setCurrentSong({
+      ...currentSong,
+      songName:props.initialPlayback.item.name,
+      artist:props.initialPlayback.item.artists?.[0].name,
+      album: props.initialPlayback.item.album?.name,
+      albumImage:props.initialPlayback.item.album?.images[1].url,
+      trackId: props.initialPlayback.item.id
+    })
+  }, [props.initialPlayback.item])
 
   const songArray = [];
   
@@ -52,7 +62,6 @@ function Player(props: any) {
       {songArray.map((track, key) => (
       <SongListCard key={key} currentSong={currentSong} playing={currentlyPlaying} id={track.id} uri={track.uri} songImage={track.album.images[1].url} songName={track.name} artist={track.artists[0].name} album={track.album.name}/>
       ))}
-      <Button title="Pause" onPress={() => pauseAsync()}/>
     </View>
   );
 }
@@ -83,8 +92,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: any) => ({
     traits: state.getTrackInfoReducer,
-    tracks: state.getDSSongsReducer
+    tracks: state.getDSSongsReducer,
+    initialPlayback: state.getCurrentPlaybackReducer
 })
 
-export default connect(mapStateToProps, {getTrackInfo, getDSSongs})(Player);
+export default connect(mapStateToProps, {getTrackInfo, getDSSongs, getCurrentPlayback})(Player);
 

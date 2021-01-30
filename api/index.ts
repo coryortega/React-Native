@@ -123,7 +123,7 @@ export async function fetchTokenAsync(code: string) {
 
   export async function getCurrentPlaybackState() {
     const client = await _getClientAsync();
-    return client.getMyCurrentPlaybackState;
+    return client.getMyCurrentPlaybackState();
   }
 
   async function _getClientAsync() {
