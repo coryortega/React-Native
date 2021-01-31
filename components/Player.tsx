@@ -13,6 +13,8 @@ import {
   pauseAsync,
   playTrackAsync,
   getUsersTopTracks,
+  fetchRefreshTokenAsync,
+  fetchTokenAsync
 } from "../api";
 import Chart from "./Chart";
 import { CurrentRenderContext } from "@react-navigation/native";

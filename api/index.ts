@@ -52,6 +52,28 @@ export async function fetchTokenAsync(code: string) {
   }
 }
 
+export async function fetchRefreshTokenAsync(refreshToken: string) {
+  const headers = {
+    headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  };
+  const data = {
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      client_id: '5d228af4d8fe45d5b1bb9702187643c0',
+      client_secret: '2e64ed63024a402d81fde645767a3680',
+  };
+
+  try {
+    const response = await axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers)
+    return await response;
+  } catch (err) {
+      console.error(err);
+  }
+}
+
   export async function fetchDevicesAsync(): Promise<any> {
     const client = await _getClientAsync();
     const result = await client.getMyDevices();
@@ -126,9 +148,31 @@ export async function fetchTokenAsync(code: string) {
     return client.getMyCurrentPlaybackState();
   }
 
+  async function _getValidTokenAsync() {
+    const newToken = await AsyncStorage.getItem("token");
+    const lastRefreshed = await AsyncStorage.getItem("tokenTime");
+    const refreshToken = await AsyncStorage.getItem("refresh");
+    const currentSeconds = new Date().getTime() / 1000;
+    try {
+      if (
+        //the token expires after 3600 sec, so we check if there's 600
+        //seconds left or less, fetch a new token
+        currentSeconds > parseInt(lastRefreshed) + 3000
+      ) {
+        const result = await fetchRefreshTokenAsync(refreshToken);
+        await AsyncStorage.setItem("tokenTime", `${currentSeconds}`);
+        await AsyncStorage.setItem("token", result?.data.access_token);
+        return result?.data.access_token;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return newToken;
+  }
+
   async function _getClientAsync() {
-    const newToken = await AsyncStorage.getItem('token')
+    const token = await _getValidTokenAsync();
     const client = new SpotifyWebApi();
-    client.setAccessToken(newToken);
+    client.setAccessToken(token);
     return client;
   }

@@ -9,8 +9,11 @@
 - [] Currently handeling auth client-side, need to move code/token exchange server-side
 - [x] Bring in DS songs, concatenate them and collectively fetch track data from Spotify
 - [] Define more Spotify functionality in api/index (prevTrack, nextTrack, createPlaylist, like/unlike, etc.)
-- [] Set up refresh token functionality when token is about to expire
+- [x] Set up refresh token functionality when token is about to expire
 - [] Swap AsyncStorage with [expo-secure-store](https://docs.expo.io/guides/authentication/#storing-data)
 - [] Create linear determinate that hovers above nav
 - [] Refactor file structure, put all player components inside ./Components/Player/{components here}
+- [] Find a way to have the songs play in order, one after another... maybe create a queue with Spotify? I'm not sure yet
+- [] Define SoundDrip as it's own player and set that is the playback device
+- [] Upon player initialization, fetch currentPlayback... if it doesn't exist, fetch the last song played and load that into the player 
 

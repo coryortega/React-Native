@@ -63,7 +63,12 @@ function useSpotifyAuth() {
           const result = await fetchTokenAsync(
             code
           );
+          console.log(result)
+          // localStorage.setItem('token', JSON.stringify(result?.data));
+          const currentSeconds = new Date().getTime() / 1000;
           AsyncStorage.setItem("token", result?.data.access_token)
+          AsyncStorage.setItem("refresh", result?.data.refresh_token)
+          AsyncStorage.setItem('tokenTime', `${currentSeconds}`);
         }
       }
       if (!isAuthenticated) {

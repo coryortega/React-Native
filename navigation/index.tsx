@@ -76,6 +76,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     setTimeout(async() => {
       try {
         userToken = await AsyncStorage.getItem('token')
+        console.log('usertoken',userToken)
       } catch(e) {
         console.log(e)
       }
