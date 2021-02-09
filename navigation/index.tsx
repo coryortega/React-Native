@@ -11,6 +11,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 // import { AsyncStorage } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../components/context';
 
 
@@ -50,12 +51,14 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   };
 
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(null)
 
   const authContext = React.useMemo(() => ({
     signIn: async(token: string) => {
       console.log("token in context", token)
       try {
-        await AsyncStorage.setItem('token', token)
+        // await AsyncStorage.setItem('token', token)
+        await SecureStore.setItemAsync('token', token)
       } catch(e) {
         console.log(e);
       }
@@ -63,7 +66,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     },
     signOut: async() => {
       try {
-        await AsyncStorage.removeItem('token');
+        // await AsyncStorage.removeItem('token');
       } catch(e) {
         console.log(e);
       }
@@ -75,11 +78,12 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     let userToken: any = null;
     setTimeout(async() => {
       try {
-        userToken = await AsyncStorage.getItem('token')
-        console.log('usertoken',userToken)
+        // userToken = await AsyncStorage.getItem('token')
+        userToken = await SecureStore.getItemAsync('token')
       } catch(e) {
         console.log(e)
       }
+      setIsAuthenticated(userToken);
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken})
     }, 1000)
   }, [])
@@ -90,7 +94,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       <NavigationContainer
         linking={LinkingConfiguration}
         theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          {loginState.userToken !== null ? (
+          {isAuthenticated !== null ? (
             <RootNavigator/>
           ) :
           <LoginScreen/>

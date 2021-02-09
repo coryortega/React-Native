@@ -17,7 +17,7 @@ export default function Dashboard() {
       >
         <Player/>
       </ScrollView>
-      <Button title="Get devices" onPress={() => console.log(fetchDevicesAsync())}/>
+      {/* <Button title="Get devices" onPress={() => console.log(fetchDevicesAsync())}/> */}
     </View>
   );
 }

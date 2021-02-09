@@ -1,12 +1,10 @@
 import * as React from 'react';
 import SpotifyWebApi from "spotify-web-api-js";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import qs from 'qs';
-import { AuthContext } from '../components/context';
 
-// const TOKEN_ENDPOINT = "http://127.0.0.1:5000/token";
-const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 
 export type Device = {
     id: string | null;
@@ -39,7 +37,8 @@ export async function fetchTokenAsync(code: string) {
   const data = {
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: 'http://localhost:19006/',
+      // redirect_uri: 'http://localhost:19006/',
+      redirect_uri: "exp://ep-rs6.coryortega.react-native.exp.direct:80",
       client_id: '5d228af4d8fe45d5b1bb9702187643c0',
       client_secret: '2e64ed63024a402d81fde645767a3680',
   };
@@ -149,9 +148,19 @@ export async function fetchRefreshTokenAsync(refreshToken: string) {
   }
 
   async function _getValidTokenAsync() {
-    const newToken = await AsyncStorage.getItem("token");
-    const lastRefreshed = await AsyncStorage.getItem("tokenTime");
-    const refreshToken = await AsyncStorage.getItem("refresh");
+    console.log("getting valid token async...")
+    // const newToken = await AsyncStorage.getItem("token");
+    // const lastRefreshed = await AsyncStorage.getItem("tokenTime");
+    // const refreshToken = await AsyncStorage.getItem("refresh");
+
+    //    const newToken = await AsyncStorage.getItem("token");
+    // const lastRefreshed = await AsyncStorage.getItem("tokenTime");
+    // const refreshToken = await AsyncStorage.getItem("refresh");
+
+    const newToken = await SecureStore.getItemAsync("token");
+    const lastRefreshed = await SecureStore.getItemAsync("tokenTime");
+    const refreshToken = await SecureStore.getItemAsync("refresh");
+
     const currentSeconds = new Date().getTime() / 1000;
     try {
       if (
@@ -160,8 +169,14 @@ export async function fetchRefreshTokenAsync(refreshToken: string) {
         currentSeconds > parseInt(lastRefreshed) + 3000
       ) {
         const result = await fetchRefreshTokenAsync(refreshToken);
-        await AsyncStorage.setItem("tokenTime", `${currentSeconds}`);
-        await AsyncStorage.setItem("token", result?.data.access_token);
+
+        //web **wont work on mobile**
+        // await AsyncStorage.setItem("tokenTime", `${currentSeconds}`);
+        // await AsyncStorage.setItem("token", result?.data.access_token);
+        //ios **wont work on web**
+        await SecureStore.setItemAsync("tokenTime", `${currentSeconds}`);
+        await SecureStore.setItemAsync("token", result?.data.access_token);
+
         return result?.data.access_token;
       }
     } catch (e) {

@@ -20,6 +20,9 @@ import Chart from "./Chart";
 import { CurrentRenderContext } from "@react-navigation/native";
 import CurrentlyPlayingCard from "./CurrentlyPlayingCard";
 import SongListCard from "./SongListCard";
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
 
 function Player(props: any) {
   const initialSong = {
@@ -83,7 +86,7 @@ function Player(props: any) {
       </View>
       <View
         style={styles.separator}
-        lightColor="#eee"
+        lightColor="rgba(255,255,255,0.1)"
         darkColor="rgba(255,255,255,0.1)"
       />
       {songArray.map((track, key) => (
@@ -108,6 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    width: windowWidth
   },
   title: {
     fontSize: 20,

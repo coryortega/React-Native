@@ -6,7 +6,8 @@ import { fetchTokenAsync } from "../api";
 import { AuthContext } from "../components/context";
 import { connect } from 'react-redux';
 import { getUserToken } from '../Redux/Spotify/spotify.actions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -66,9 +67,13 @@ function useSpotifyAuth() {
           console.log(result)
           // localStorage.setItem('token', JSON.stringify(result?.data));
           const currentSeconds = new Date().getTime() / 1000;
-          AsyncStorage.setItem("token", result?.data.access_token)
-          AsyncStorage.setItem("refresh", result?.data.refresh_token)
-          AsyncStorage.setItem('tokenTime', `${currentSeconds}`);
+          // AsyncStorage.setItem("token", result?.data.access_token)
+          // AsyncStorage.setItem("refresh", result?.data.refresh_token)
+          // AsyncStorage.setItem('tokenTime', `${currentSeconds}`);
+
+          await SecureStore.setItemAsync("tokenTime", `${currentSeconds}`);
+          await SecureStore.setItemAsync("token", result?.data.access_token);
+          await SecureStore.setItemAsync("refresh", result?.data.refresh_token);
         }
       }
       if (!isAuthenticated) {

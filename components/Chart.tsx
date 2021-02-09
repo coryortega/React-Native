@@ -4,6 +4,16 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis,
 } from 'recharts';
 
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from "react-native-chart-kit";
+import reducers from '../Redux/reducers';
+
 
 export default function Chart(props: any) {
 
@@ -58,9 +68,25 @@ export default function Chart(props: any) {
     },
   ];
 
+  const data1 = {
+    labels: ["Acousticness", "Danceability", "Energy", "Valence", "Liveness", "Instrumentalness"], // optional
+    data: [songData.acousticness, songData.danceability, songData.energy, songData.valence, songData.liveness, songData.instrumentalness]
+  };
+
+  const chartConfig = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.2,
+    useShadowColorFromDataset: false // optional
+  };
+
     return (
         <View>
-             <RadarChart cx={188} cy={120} outerRadius={100} width={377} height={240} data={data}>
+             {/* <RadarChart cx={188} cy={120} outerRadius={100} width={377} height={240} data={data}>
                  <PolarGrid />
                  <PolarAngleAxis stroke='white' dataKey="subject" />
                  <Radar id="canvas"
@@ -70,7 +96,17 @@ export default function Chart(props: any) {
                   fill='#E20351'
                   fillOpacity={0.9}
                 />
-            </RadarChart>
+            </RadarChart> */}
+
+          <ProgressChart
+            data={data1}
+            width={300}
+            height={200}
+            strokeWidth={10}
+            radius={32}
+            chartConfig={chartConfig}
+            hideLegend={false}
+          />
         </View>
     );
 }
