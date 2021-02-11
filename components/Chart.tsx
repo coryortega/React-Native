@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Text, View } from './Themed';
 import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis,
