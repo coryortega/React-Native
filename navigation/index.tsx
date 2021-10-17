@@ -12,7 +12,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 // import { AsyncStorage } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from '../components/context';
+//import { AuthContext } from '../components/context';
 
 
 // If you are not familiar with React Navigation, we recommend going through the
@@ -24,55 +24,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     isLoading: true,
     userToken: null
   };
-  
-  const loginReducer = (prevState: any, action: any) => {
-    switch( action.type ) {
-      case 'RETRIEVE_TOKEN':
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGIN':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGOUT':
-        return {
-          ...prevState,
-          userName: null,
-          userToken: null,
-          isLoading: false,
-        };
-    }
-  };
 
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
   const [isAuthenticated, setIsAuthenticated] = React.useState(null)
-
-  const authContext = React.useMemo(() => ({
-    signIn: async(token: string) => {
-      console.log("token in context", token)
-      try {
-        // await AsyncStorage.setItem('token', token)
-        await SecureStore.setItemAsync('token', token)
-      } catch(e) {
-        console.log(e);
-      }
-      dispatch({type: 'LOGIN', token: token})
-    },
-    signOut: async() => {
-      try {
-        // await AsyncStorage.removeItem('token');
-      } catch(e) {
-        console.log(e);
-      }
-      dispatch({type: 'LOGOUT'})
-    }
-  }), []);
 
   React.useEffect(() => {
     let userToken: any = null;
@@ -84,23 +37,22 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
         console.log(e)
       }
       setIsAuthenticated(userToken);
-      dispatch({ type: 'RETRIEVE_TOKEN', token: userToken})
+      //dispatch({ type: 'RETRIEVE_TOKEN', token: userToken})
     }, 1000)
   }, [])
 
-  
   return (
-    <AuthContext.Provider value={authContext}>
+
       <NavigationContainer
         linking={LinkingConfiguration}
         theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           {isAuthenticated !== null ? (
-            <RootNavigator/>
+            <RootNavigator/>  
           ) :
           <LoginScreen/>
           }
       </NavigationContainer>
-    </AuthContext.Provider>
+
   );
 }
 
@@ -111,11 +63,11 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Screen name="MyModal" component={ModalScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-    </Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Root" component={BottomTabNavigator} />
+        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        <Stack.Screen name="MyModal" component={ModalScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+      </Stack.Navigator>
   );
 }

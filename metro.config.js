@@ -14,6 +14,19 @@ module.exports = (async () => {
 		},    
 		resolver: {
 			assetExts: assetExts.filter(ext => ext !== "svg"),
-			sourceExts: [...sourceExts, "svg"]    
+			//sourceExts: [...sourceExts, "svg"]
+			sourceExts: [
+				"expo.ts",
+				"expo.tsx",
+				"expo.js",
+				"expo.jsx",
+				"ts",
+				"tsx",
+				"js",
+				"jsx",
+				"json",
+				"wasm",
+				"svg"
+			]
 		}};
 })();

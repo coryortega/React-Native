@@ -3,7 +3,7 @@ import { Platform } from "react-native";
 import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import { fetchTokenAsync } from "../api";
-import { AuthContext } from "../components/context";
+//import { AuthContext } from "../components/context";
 import { connect } from 'react-redux';
 import { getUserToken } from '../Redux/Spotify/spotify.actions';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,7 +21,7 @@ WebBrowser.maybeCompleteAuthSession();
 function useSpotifyAuth() {
   const [error, setError] = useState<any | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { signIn } = useContext(AuthContext);
+  //const { signIn } = useContext(AuthContext);
 
   const [authRequest, authResponse, promptAsync] = useAuthRequest(
     {
@@ -70,6 +70,8 @@ function useSpotifyAuth() {
           // AsyncStorage.setItem("token", result?.data.access_token)
           // AsyncStorage.setItem("refresh", result?.data.refresh_token)
           // AsyncStorage.setItem('tokenTime', `${currentSeconds}`);
+
+          setIsAuthenticated(true);
 
           await SecureStore.setItemAsync("tokenTime", `${currentSeconds}`);
           await SecureStore.setItemAsync("token", result?.data.access_token);

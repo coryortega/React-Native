@@ -76,18 +76,18 @@ export async function fetchRefreshTokenAsync(refreshToken: string) {
   export async function fetchDevicesAsync(): Promise<any> {
     const client = await _getClientAsync();
     const result = await client.getMyDevices();
-    return result.devices
-      .map(
-        (d: typeof result.devices[0]) =>
-          ({
-            id: d.id,
-            name: d.name,
-            isActive: d.is_active,
-            isRestricted: d.is_restricted,
-            type: d.type,
-          } as Device)
-      )
-      .sort((a: Device, b: Device) => (a.isActive && b.isActive ? 0 : -1));
+    return result
+      // .map(
+      //   (d: typeof result.devices[0]) =>
+      //     ({
+      //       id: d.id,
+      //       name: d.name,
+      //       isActive: d.is_active,
+      //       isRestricted: d.is_restricted,
+      //       type: d.type,
+      //     } as Device)
+      // )
+      // .sort((a: Device, b: Device) => (a.isActive && b.isActive ? 0 : -1));
   }
 
   export async function playTrackAsync({
@@ -147,8 +147,13 @@ export async function fetchRefreshTokenAsync(refreshToken: string) {
     return client.getMyCurrentPlaybackState();
   }
 
+  export async function getCurrentPlayingTrack() {
+    const client = await _getClientAsync();
+    return client.getMyCurrentPlayingTrack();
+  }
+
   async function _getValidTokenAsync() {
-    console.log("getting valid token async...")
+    // console.log("getting valid token async...")
     // const newToken = await AsyncStorage.getItem("token");
     // const lastRefreshed = await AsyncStorage.getItem("tokenTime");
     // const refreshToken = await AsyncStorage.getItem("refresh");

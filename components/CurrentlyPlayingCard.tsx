@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: 300,
-    height: 300,
+    width: 280,
+    height: 280,
     margin: 10,
-    marginTop: 20
+    marginTop: 25
   },
 });

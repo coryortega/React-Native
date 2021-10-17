@@ -6,16 +6,28 @@ import { Text, View} from '../components/Themed';
 import LoginButton from '../components/LoginButton';
 import Album_background from '../assets/images/albumsbackground.svg';
 // import authHandler from "../components/utils/authenticationHandler";
+//import { useNavigation } from '@react-navigation/native';
 import SvgBackground from '../assets/SvgBackground';
 import useSpotifyAuth from "../hooks/useSpotifyAuth";
+
+import {
+  fetchDevicesAsync
+} from "../api";
 
 
 const Login = ({ navigation }: any) => {
   const { isAuthenticated, error, authenticateAsync } = useSpotifyAuth();
 
+
+
+
+  console.log("is auth'd -->", isAuthenticated)
+
   React.useEffect(() => {
     if (isAuthenticated) {
-      alert(error);
+      fetchDevicesAsync().then(res => {
+      })
+      navigation.navigate('Root')
     }
   }, [isAuthenticated]);
 
@@ -35,7 +47,6 @@ const Login = ({ navigation }: any) => {
         <SvgBackground/>
       </View>
       <View style={styles.loginScreenButton}>
-        {/* <LoginButton props={navigation}/> */}
         <Button color={Platform.OS === 'ios' ? 'white' : '#e21051'} title={'Sign in with Spotify'} onPress={() => authenticateAsync()}/>
       </View>
       

@@ -4,7 +4,7 @@ const initialState = {
     context: null,
     currently_playing_type: "",
     device: {},
-    is_playing: null,
+    is_playing: false,
     item: {},
     progress_ms: 0,
     repeat_state: "",

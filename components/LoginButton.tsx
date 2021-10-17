@@ -57,8 +57,8 @@ const LoginButton = (props: any) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { code } = response.params;
-            console.log("THIS CODE FROM PARAMS", code)
-            console.log("response 1 =", response)
+
+
             const headers = {
                 headers: {
                 Accept: 'application/json',
@@ -75,7 +75,6 @@ const LoginButton = (props: any) => {
 
             axios.post('https://accounts.spotify.com/api/token', qs.stringify(data), headers)
             .then(res => {
-                console.log("response 2 =", res)
                 const token = res.data;
                 console.log("this is token:", token)
                 signIn(token.access_token);

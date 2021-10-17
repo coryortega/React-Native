@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Font from "expo-font";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Text, View } from "./Themed";
 import { pauseAsync } from "../api";
@@ -11,13 +11,14 @@ const windowWidth = Dimensions.get("window").width;
 export default function SongListCard(props: any) {
   const [isPlaying, setIsPlaying] = React.useState(false);
 
-  function setCurrentlyPlaying(id, uri, image, name, artist, album) {
+  function setCurrentlyPlaying(id: any, uri: any, image: any, name: any, artist: any, album: any) {
     props.playing(id, uri, image, name, artist, album);
   }
 
   return (
     <TouchableOpacity
       // delayPressIn={1000}
+      activeOpacity={1}
       onPress={() =>
         props.currentSong.trackId === props.id && isPlaying
           ? (pauseAsync(), setIsPlaying(false))
@@ -41,6 +42,7 @@ export default function SongListCard(props: any) {
           </View>
         </View>
         <TouchableOpacity
+          activeOpacity={1}
           onPress={() =>
             props.currentSong.trackId === props.id && isPlaying
               ? (pauseAsync(), setIsPlaying(false))
@@ -57,11 +59,9 @@ export default function SongListCard(props: any) {
           style={styles.playButton}
         >
           {props.currentSong.trackId === props.id && isPlaying ? (
-            // <Ionicons name="pause" size={27} color="white" />
-            <Text>▌▌</Text>
+            <FontAwesome5 name="pause" size={24} color="white" />
           ) : (
-            // <AntDesign name="caretright" size={24} color="white" />
-            <Text style={styles.playButtonText}>►</Text>
+            <AntDesign name="caretright" size={24} color="white" />
           )}
         </TouchableOpacity>
       </View>

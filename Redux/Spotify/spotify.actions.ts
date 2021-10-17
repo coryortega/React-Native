@@ -1,5 +1,5 @@
 import SpotifyActionTypes from "./spotify.types";
-import { fetchTokenAsync, getAudioInfo, getCurrentPlaybackState } from "../../api"
+import { fetchTokenAsync, getAudioInfo, getCurrentPlaybackState, getCurrentPlayingTrack } from "../../api"
 
 
 export const getUserToken = (code: string) => (dispatch: any) => {
@@ -60,6 +60,25 @@ export const getCurrentPlayback = () => (dispatch: any) => {
     .catch((err) => {
         dispatch({
             type: SpotifyActionTypes.GET_CURRENT_PLAYBACK_FAILURE,
+            payload: err
+        });    
+    })
+}
+
+export const getCurrentTrack = () => (dispatch: any) => {
+    dispatch({
+        type: SpotifyActionTypes.GET_CURRENT_TRACK_FETCHING
+    });
+    getCurrentPlayingTrack()
+    .then((res) => {
+        dispatch({
+            type: SpotifyActionTypes.GET_CURRENT_TRACK_SUCCESS,
+            payload: res
+        });
+    })
+    .catch((err) => {
+        dispatch({
+            type: SpotifyActionTypes.GET_CURRENT_TRACK_FAILURE,
             payload: err
         });    
     })
